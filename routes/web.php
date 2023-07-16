@@ -208,8 +208,13 @@ Route::get('/product/view/modal/{id}','ProductViewModel');
 });
 
 
+/// Details Paga Product Add to cart store data
+Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToDCart']);
+
 /// Add to cart store data
 Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
+
 /// Get Data from mini cart
 Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
-
+// Mini Product Data Remove 
+Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);

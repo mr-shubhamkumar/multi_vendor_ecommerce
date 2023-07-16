@@ -45,11 +45,13 @@
 
                                 <div class="clearfix product-price-cover">
                                     <div class="product-price primary-color float-left">
-                                        <span class="current-price text-brand" id="pprice">$</span>
-                                        <span>
+                                        <span class="current-price text-brand" >$</span>
+                                        <span class="current-price text-brand" id="pprice"></span>
                                         
-                                            <span class="old-price font-md ml-15" id="oldprice">$</span>
-                                        </span>
+                                        
+                                            <span class="old-price" >$</span>
+                                            <span class="old-price  font-md ml-15"  id="oldprice"></span>
+                                        
                                     </div>
                                 </div>
                                 <div class="detail-extralink mb-30">

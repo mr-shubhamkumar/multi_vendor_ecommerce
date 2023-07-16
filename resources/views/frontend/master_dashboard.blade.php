@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/plugins/animate.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css?v=5.3') }}" />
   <!-- toastr  -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
+    <link rel="stylesheet"  type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
   <!-- toastr  -->
 </head>
 
@@ -207,6 +207,7 @@
         },
         url: "/cart/data/store/"+id,
         success:function(data){
+            miniCart();
             $('#closeModal').click();
             // console.log(data)
 
@@ -254,13 +255,144 @@
             type: 'GET',
             dataType: 'json',
             success:function(response){
-                console.log(response);
+                // console.log(response);
+
+                  $('span[id="cartTotal"]').text(response.cartTotal);  
+                    $('#cartQty').text(response.cartQty);
+
+                var miniCart = ""
+                $.each(response.carts , function(key,value) {
+                   
+                  
+                    
+                    miniCart += `
+
+                    <ul>
+                        <li>
+                            <div class="shopping-cart-img">
+                                <a href="shop-product-right.html"><img alt="Nest" src="/${value.options.image}"style="width: 50px; height: 50px;" /></a>
+                            </div>
+                            <div class="shopping-cart-title" style="margin: -73px 74px 14px; width:146px;" >
+
+                                <h4><a href="shop-product-right.html">${value.name.substring(0,20)}</a></h4>
+                                <h4><span>${value.qty} × </span>${value.price}</h4>
+                            </div>
+                            <div class="shopping-cart-delete" style="margin:-85px 1px 0px;">
+                                <a type="submit" id="${value.rowId}" onclick="miniCartRemove(this.id)">
+                                <i class="fi-rs-cross-small"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                    <hr><br>`
+                });
+                $('#miniCart').html(miniCart);
+
+
             }
         })
        
         
+    };
+    miniCart();
+
+
+    //Mini Cart Reamove Start
+
+    function miniCartRemove(rowId) {
+        $.ajax({
+            url: '/minicart/product/remove/'+rowId,
+            type: 'GET',
+            dataType: 'json',
+            success:function(data){
+                miniCart();
+                 // Sweet Alert Massage
+
+            const Toast = Swal.mixin({
+                toast: true,
+              position: 'top-end',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            if ($.isEmptyObject(data.error)) {
+                Toast.fire({
+                  type: 'success',
+                  title: data.success,
+                })
+            }else{
+                Toast.fire({
+                  type: 'error',
+                  title: data.error,
+                })
+            }
+            // Sweet Alert Massage End
+
+
+
+            }
+        })
+     
+        
     }
+    miniCart();
+    //Mini Cart Reamove End
+
+
+    //Start Add To Cart Details
+
+     function addToCartDetails(){
+        
+     var product_name = $('#dpname').text();  
+     var id = $('#dproduct_id').val();
+     var color = $('#dcolor option:selected').text();
+     var size = $('#dsize option:selected').text();
+     var quantity = $('#dqty').val(); 
+     $.ajax({
+        type: "POST",
+        dataType : 'json',
+        data:{
+            color:color, size:size, quantity:quantity,product_name:product_name
+        },
+        url: "/dcart/data/store/"+id,
+        success:function(data){
+            miniCart();
+
+            // Sweet Alert Massage
+
+            const Toast = Swal.mixin({
+                toast: true,
+              position: 'top-end',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            if ($.isEmptyObject(data.error)) {
+                Toast.fire({
+                  type: 'success',
+                  title: data.success,
+                })
+            }else{
+                Toast.fire({
+                  type: 'error',
+                  title: data.error,
+                })
+            }
+            // Sweet Alert Massage End
+
+        }
+
+
+
+     })
+
+
+    }
+
+    //End Add To Cart Details
 </script>
 </body>
 
-</html>
+</html> 
