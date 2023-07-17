@@ -108,6 +108,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Sweet Alert -->
 
+<!-- STAR ADD TO CART AND PRODUCT VIEW -->
 <script type="text/javascript">
 
 
@@ -248,6 +249,9 @@
     /// End Add To Cart Prodcut 
 </script>
 
+<!-- STAR ADD TO CART AND PRODUCT VIEW -->
+
+<!-- START ADD TO MINI CAR AND REAMOVIE MINI CART AND PRODUCT DEATALS -->
 <script type="text/javascript">
     function miniCart() {
         $.ajax({
@@ -393,6 +397,65 @@
 
     //End Add To Cart Details
 </script>
+<!-- END ADD TO MINI CAR AND REAMOVIE MINI CART AND PRODUCT DEATALS -->
+
+
+
+<!-- START WHISH LIST   -->
+<script type="text/javascript">
+    function addToWishList(product_id) {
+        $.ajax({
+            url: '/add-to-wishlist/'+product_id,
+            type: 'POST',
+            dataType: 'json', 
+            success:function(data){
+                console.log(data)
+                // Sweet Alert Massage
+
+            const Toast = Swal.mixin({
+                toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            if ($.isEmptyObject(data.error)) {
+                Toast.fire({
+                  type: 'success',
+                  icon: 'success',
+                  title: data.success,
+                })
+            }else{
+                Toast.fire({
+                  type: 'error',
+                  icon: 'error',
+                  title: data.error,
+                })
+            }
+            // Sweet Alert Massage End
+            }
+        })    
+    }
+</script>
+<!-- END WHISH LIST  -->
+
+
+
+<!-- START LOAD WHISH LIST  DATA  -->
+<script type="text/javascript">
+    function addToWishList() {
+        $.ajax({
+            url: '/get-wishlist-product/',
+            type: 'GET',
+            dataType: 'json', 
+            success:function(data){
+                
+            
+            }
+        })    
+    }
+</script>
+<!-- END LOAD WHISH LIST DATA -->
 </body>
 
 </html> 

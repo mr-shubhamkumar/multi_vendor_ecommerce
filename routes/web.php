@@ -13,6 +13,8 @@ use  App\Http\Controllers\Backend\VendorProductController;
 use  App\Http\Controllers\Backend\SliderController;
 use  App\Http\Controllers\Backend\BannerController;
 
+use  App\Http\Controllers\User\WishlistController;
+
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\CartController;
 use  App\Http\Middleware\RedirectIfAuthenticated;
@@ -218,3 +220,21 @@ Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
 Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
 // Mini Product Data Remove 
 Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
+
+
+
+//USER ALL ROUTE
+Route::middleware(['auth','role:user'])->group(function(){
+
+
+
+//ADD TO Wish List 
+Route::post('/add-to-wishlist/{product_id}',[WishlistController::class,'addToWishList']);
+
+//Wishlist Controller 
+Route::controller(WishlistController::class)->group(function(){
+    Route::get('/wishlist','AllWishList')->name('wishlist');
+    Route::get('/get-wishlist-product/','GetWishlistProduct');
+   
+});//Wishlist Controller End
+});
