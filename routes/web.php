@@ -235,6 +235,7 @@ Route::post('/add-to-wishlist/{product_id}',[WishlistController::class,'addToWis
 Route::controller(WishlistController::class)->group(function(){
     Route::get('/wishlist','AllWishList')->name('wishlist');
     Route::get('/get-wishlist-product/','GetWishlistProduct');
+    Route::get('/wishlist-remove/{id}','RemoveWishlist');
    
 });//Wishlist Controller End
 });

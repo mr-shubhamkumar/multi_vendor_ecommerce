@@ -409,7 +409,7 @@
             type: 'POST',
             dataType: 'json', 
             success:function(data){
-                console.log(data)
+               wishlist()
                 // Sweet Alert Massage
 
             const Toast = Swal.mixin({
@@ -443,19 +443,107 @@
 
 <!-- START LOAD WHISH LIST  DATA  -->
 <script type="text/javascript">
-    function addToWishList() {
+    function wishlist() {
         $.ajax({
             url: '/get-wishlist-product/',
             type: 'GET',
             dataType: 'json', 
-            success:function(data){
-                
+            success:function(response){
+                $('#wishlistQty').text(response.wishqty)
+            var rows = "";
+            $.each(response.wishlist, function(key, val) {
+                 /* iterate through array or object */
+
+                rows+= 
+            `
+             <tr class="pt-30">
+                                    
+                <td class="image product-thumbnail pt-40"><img src="/${val.product.product_thambnail}" alt="#" /></td>
+                <td class="product-des product-name">
+                    <h6><a class="product-name mb-10" href="shop-product-right.html">${val.product.product_name}</a></h6>
+                    <div class="product-rate-cover">
+                        <div class="product-rate d-inline-block">
+                            <div class="product-rating" style="width: 90%"></div>
+                        </div>
+                        <span class="font-small ml-5 text-muted"> (4.0)</span>
+                    </div>
+                </td>
+                <td class="price" data-title="Price">
+                 ${val.product.discount_price == null
+                 ?
+                 `<h3 class="text-brand">$${val.product.selling_price}</h3>`
+                 :
+                 `<h3 class="text-brand">$${val.product.selling_price - val.product.discount_price}</h3>`
+                 }
+                    
+                </td>
+                <td class="text-center detail-info" data-title="Stock">
+                 ${val.product.product_qty == null
+                 ?
+                 `<span class="stock-status out-stock mb-0"> Out Stock </span>`
+                 :
+                 `<span class="stock-status in-stock mb-0"> In Stock </span>`
+                 }
+                    
+                <td class="action text-center" data-title="Remove">
+                    <a type="submit" id="${val.id}" onclick="wishListRemove(this.id)"  class="text-body"><i class="fi-rs-trash"></i></a>
+                </td>
+                </tr>
+            `;
+
+
+            }); // END EACH
+             $('#wishlist_data').html(rows);
+
             
             }
         })    
     }
+
+    // CALL getWishListData FUNCTION
+    wishlist()
+    // <!-- END LOAD WHISH LIST DATA -->
+
+    // Remove Wishlist
+function wishListRemove(id){
+
+        $.ajax({
+            url: "/wishlist-remove/"+id,
+            type: "GET",
+            dataType: 'json', 
+            success:function(data){
+             
+                wishlist();
+               
+                // Sweet Alert Massage
+
+            const Toast = Swal.mixin({
+                toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            if ($.isEmptyObject(data.error)) {
+                Toast.fire({
+                  type: 'success',
+                  icon: 'success',
+                  title: data.success,
+                })
+            }else{
+                Toast.fire({
+                  type: 'error',
+                  icon: 'error',
+                  title: data.error,
+                })
+            }
+            // Sweet Alert Massage End
+            }
+        })    
+    }
+    
 </script>
-<!-- END LOAD WHISH LIST DATA -->
+
 </body>
 
 </html> 
