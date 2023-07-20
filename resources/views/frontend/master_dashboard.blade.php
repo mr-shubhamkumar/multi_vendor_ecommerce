@@ -361,12 +361,10 @@
         },
         url: "/dcart/data/store/"+id,
         success:function(data){
-            miniCart();
-
             // Sweet Alert Massage
 
             const Toast = Swal.mixin({
-                toast: true,
+             toast: true,
               position: 'top-end',
               icon: 'success',
               showConfirmButton: false,
@@ -400,21 +398,20 @@
 <!-- END ADD TO MINI CAR AND REAMOVIE MINI CART AND PRODUCT DEATALS -->
 
 
-
-<!-- START WHISH LIST   -->
+<!-- START WISH LIST -->
 <script type="text/javascript">
     function addToWishList(product_id) {
         $.ajax({
             url: '/add-to-wishlist/'+product_id,
             type: 'POST',
-            dataType: 'json', 
+            dataType: 'json',
             success:function(data){
-               wishlist()
-                // Sweet Alert Massage
-
+                wishlist()
+             // Sweet Alert Massage
             const Toast = Swal.mixin({
                 toast: true,
               position: 'top-end',
+              
               showConfirmButton: false,
               timer: 3000
             });
@@ -427,19 +424,28 @@
                 })
             }else{
                 Toast.fire({
+                icon: 'error',
                   type: 'error',
-                  icon: 'error',
                   title: data.error,
                 })
             }
             // Sweet Alert Massage End
             }
-        })    
+        }).fail(function(){
+            Swal.fire({
+                toast: true,
+              position: 'top-end',
+              icon: 'error',
+              title: 'At First Login Your Account',
+              showConfirmButton: false,
+              timer: 3000
+            })
+        })
+        
+        
     }
 </script>
-<!-- END WHISH LIST  -->
-
-
+<!-- END WISH LIST -->
 
 <!-- START LOAD WHISH LIST  DATA  -->
 <script type="text/javascript">
@@ -544,6 +550,46 @@ function wishListRemove(id){
     
 </script>
 
+
+
+
+<!-- START PEODUCT COMPERE  -->
+<script type="text/javascript">
+    function addToCompare(compare_id) {
+        $.ajax({
+            url: '/add-to-compare/'+compare_id,
+            type: 'POST',
+            dataType: 'json',
+            success:function(data){
+
+            // Sweet Alert Massage
+            const Toast = Swal.mixin({
+                toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            if ($.isEmptyObject(data.error)) {
+                Toast.fire({
+                  type: 'success',
+                  icon: 'success',
+                  title: data.success,
+                })
+            }else{
+                Toast.fire({
+                  type: 'error',
+                  icon: 'error',
+                  title: data.error,
+                })
+            }
+            // Sweet Alert Massage End 
+            }
+        })
+        
+    }
+</script>
+<!-- END PEODUCT COMPERE  -->
 </body>
 
 </html> 

@@ -14,6 +14,7 @@ use  App\Http\Controllers\Backend\SliderController;
 use  App\Http\Controllers\Backend\BannerController;
 
 use  App\Http\Controllers\User\WishlistController;
+use  App\Http\Controllers\User\CompareController;
 
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\CartController;
@@ -221,15 +222,14 @@ Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
 // Mini Product Data Remove 
 Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
 
-
-
-//USER ALL ROUTE
-Route::middleware(['auth','role:user'])->group(function(){
-
-
+// Compere Product
+Route::post('/add-to-compare/{compere_id}', [CompareController::class, 'AddToCompere']);
 
 //ADD TO Wish List 
 Route::post('/add-to-wishlist/{product_id}',[WishlistController::class,'addToWishList']);
+
+//USER ALL ROUTE
+Route::middleware(['auth','role:user'])->group(function(){
 
 //Wishlist Controller 
 Route::controller(WishlistController::class)->group(function(){
