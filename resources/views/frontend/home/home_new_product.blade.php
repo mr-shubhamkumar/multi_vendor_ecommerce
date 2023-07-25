@@ -44,6 +44,7 @@ $categories = App\Models\Category::orderBy('category_name','ASC')->get();
 
                                     <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"
                                      id="{{$product->id}}" onclick="productView(this.id)"><i class="fi-rs-eye"></i></a>
+                                     
                                 </div>
                                   @php 
                                     $discount = ($product->discount_price/ $product->selling_price) * 100;

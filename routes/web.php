@@ -211,22 +211,23 @@ Route::get('/product/view/modal/{id}','ProductViewModel');
 });
 
 
-/// Details Paga Product Add to cart store data
-Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToDCart']);
 
-/// Add to cart store data
-Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
 
-/// Get Data from mini cart
-Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
-// Mini Product Data Remove 
-Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
+Route::controller(CartController::class)->group(function(){
+Route::post('/dcart/data/store/{id}',  'AddToDCart');
+Route::post('/cart/data/store/{id}',  'AddToCart');
+Route::get('/product/mini/cart',  'AddMiniCart');
+Route::get('/minicart/product/remove/{rowId}',  'RemoveMiniCart');
+   
+});//Cart Controller End
+
 
 // Compere Product
 Route::post('/add-to-compare/{compere_id}', [CompareController::class, 'AddToCompere']);
 
 //ADD TO Wish List 
 Route::post('/add-to-wishlist/{product_id}',[WishlistController::class,'addToWishList']);
+
 
 //USER ALL ROUTE
 Route::middleware(['auth','role:user'])->group(function(){
@@ -238,4 +239,25 @@ Route::controller(WishlistController::class)->group(function(){
     Route::get('/wishlist-remove/{id}','RemoveWishlist');
    
 });//Wishlist Controller End
-});
+
+//Wishlist Controller 
+Route::controller(CompareController::class)->group(function(){
+    Route::get('/compare','AllCompare')->name('compare');
+    Route::get('/get-compare-product/','GetCompareProduct');
+    Route::get('/compare-remove/{id}','RemoveCompere');
+   
+});//Compare Controller End
+
+
+// Cart Controller 
+Route::controller(CartController::class)->group(function(){
+    Route::get('/mycart','MyCart')->name('mycart');
+    Route::get('/get-cart-product','GetCartProduct');
+    Route::get('/remove-cart/{rowId}','CartRemove');
+
+    Route::get('/cart-decrement/{rowId}','CartDecrement');
+    Route::get('/cart-increment/{rowId}','CartIncrement');
+   
+});//Cart Controller End
+
+}); // End Group Middleware

@@ -589,7 +589,287 @@ function wishListRemove(id){
         
     }
 </script>
+<!-- START LOAD COMPARE LIST  DATA  -->
+<script type="text/javascript">
+    function compare() {
+        $.ajax({
+            url: '/get-compare-product/',
+            type: 'GET',
+            dataType: 'json', 
+            success:function(response){
+      
+            var rows = "";
+            $.each(response, function(key, val) {
+                 
+                rows+= 
+            `
+             <tr class="pr_image">
+                                    <td class="text-muted font-sm fw-600 font-heading mw-200">Preview</td>
+                                    <td class="row_img"><img src="/${val.product.product_thambnail}" style="width:300px; height:300px;" alt="compare-img" />
+                                    </td>
+
+                                </tr>
+                                <tr class="pr_title">
+                                    <td class="text-muted font-sm fw-600 font-heading">Name</td>
+                                    <td class="product_name">
+                                        <h6><a href="shop-product-full.html" class="text-heading">${val.product.product_name}</a></h6>
+                                    </td>
+
+                                </tr>
+                                <tr class="pr_price">
+                                    <td class="text-muted font-sm fw-600 font-heading">Price</td>
+                                    <td class="product_price">
+                                    ${val.product.discount_price == null
+                                     ?
+                                     `<h3 class=" price text-brand">$${val.product.selling_price}</h3>`
+                                     :
+                                     `<h3 class=" price text-brand">$${val.product.selling_price - val.product.discount_price}</h3>`
+                                     }
+                                        
+                                    </td>
+
+                                </tr>
+
+                                <tr class="description">
+                                    <td class="text-muted font-sm fw-600 font-heading">Description</td>
+                                    <td class="row_text font-xs">
+                                        <p class="font-sm text-muted">
+                                        ${val.product.short_descp}
+                                        </p>
+                                    </td>
+
+                                </tr>
+                                <tr class="pr_stock">
+                                    <td class="text-muted font-sm fw-600 font-heading">Stock status</td>
+                                     ${val.product.product_qty == null
+                                     ?
+                                     `<td class="row_stock"><span class="stock-status out-stock mb-0"> Out Stock </span></td>`
+                                     :
+                                     `<td class="row_stock"><span class="stock-status in-stock mb-0"> In Stock </span></td>`
+                                     }
+                                    
+
+                                </tr>
+
+                                <tr class="pr_remove text-muted">
+                                    <td class="text-muted font-md fw-600"></td>
+                                    <td class="row_remove">
+                                    <a type="submit" id="${val.id}" onclick="comperRemove(this.id)"  class="text-body"><i class="fi-rs-trash"></i>Remove</a>
+                                    </td>
+
+                                </tr>
+                               
+
+            `;
+
+
+            }); // END EACH
+             $('#compare').html(rows);
+
+            
+            }
+        })    
+    }
+    compare()
+    // <!-- END LOAD WHISH LIST DATA -->
+
+    // COMPERE REMOVE
+    function comperRemove(id){
+
+        $.ajax({
+            url: "/compare-remove/"+id,
+            type: "GET",
+            dataType: 'json', 
+            success:function(data){
+             
+                compare();
+               
+                // Sweet Alert Massage
+
+            const Toast = Swal.mixin({
+                toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            if ($.isEmptyObject(data.error)) {
+                Toast.fire({
+                  type: 'success',
+                  icon: 'success',
+                  title: data.success,
+                })
+            }else{
+                Toast.fire({
+                  type: 'error',
+                  icon: 'error',
+                  title: data.error,
+                })
+            }
+            // Sweet Alert Massage End
+            }
+        })    
+    }
+</script>
 <!-- END PEODUCT COMPERE  -->
+
+
+
+<!--  My Cart Strat -->
+<script type="text/javascript">
+     function cart() {
+        $.ajax({
+            url: '/get-cart-product',
+            type: 'GET',
+            dataType: 'json',
+            success:function(response){
+              
+
+                var cart_rows = ""
+                $.each(response.carts , function(key,value) {
+                   
+                  
+                     
+                    cart_rows += 
+                    `
+                    <tr class="pt-30">
+                                    <td class="custome-checkbox pl-30">
+                                        
+                                    </td>
+                                    <td class="image product-thumbnail pt-40"><img src="/${value.options.image}" alt="#"></td>
+                                    <td class="product-des product-name">
+                                        <h6 class="mb-5"><a class="product-name mb-10 text-heading" href="shop-product-right.html">${value.name}</a></h6>
+                                        <div class="product-rate-cover">
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width:90%">
+                                                </div>
+                                            </div>
+                                            <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                        </div>
+                                    </td>
+                                    <td class="price" data-title="Price">
+                                        <h4 class="text-body">₹${value.price}</h4>
+                                    </td>
+                                    <td class="price" data-title="Price">
+                                        <h6 class="text-body">${value.options.color} </h6>
+                                    </td>
+                                    <td class="price" data-title="Price">
+                                    ${value.options.size  == null
+                                    ? `<h6 class="text-body">..... </h6>`
+                                    :`<h6 class="text-body">${value.options.size} </h6>`
+
+                                    }
+                                        
+                                    </td>
+                                    <td class="text-center detail-info" data-title="Stock">
+                                        <div class="detail-extralink mr-15">
+                                            <div class="detail-qty border radius">
+
+              <a type="submit"id="${value.rowId}" onclick="cartDecrement(this.id)" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+
+                                                <input type="text" name="quantity" class="qty-val" value="${value.qty}" min="1">
+
+             <a type="submit"id="${value.rowId}" onclick="cartIncrement(this.id)"  class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="price" data-title="Price">
+                                        <h4 class="text-brand">₹${value.subtotal} </h4>
+                                    </td>
+                                    <td class="action text-center" data-title="Remove">
+                                    <a type="submit" id="${value.rowId}" onclick="removeCart(this.id)" class="text-body"><i class="fi-rs-trash"></i></a>
+                                    </td>
+                                </tr>
+                   `
+                }); // Foreach End
+
+                $('#cartPage').html(cart_rows);
+                $('#myCartQty').text(response.cartQty)
+
+
+            }
+        })
+       
+        
+    };
+    cart();
+
+    // Remove Cart Product on cart page
+    function removeCart(id) {
+        console.log(id);
+        $.ajax({
+            url: "/remove-cart/"+id,
+            type: "GET",
+            dataType: 'json', 
+            success:function(data){
+                cart();
+
+            // Sweet Alert Massage
+            const Toast = Swal.mixin({
+                toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            if ($.isEmptyObject(data.error)) {
+                Toast.fire({
+                  type: 'success',
+                  icon: 'success',
+                  title: data.success,
+                })
+            }else{
+                Toast.fire({
+                  type: 'error',
+                  icon: 'error',
+                  title: data.error,
+                })
+            }
+            // Sweet Alert Massage End
+            }
+        }) 
+    }
+    // Remove Cart Product on cart page
+
+
+
+
+    // Decrement Cart Product Qty 
+    function cartDecrement(rowId) {
+        // alert(rowId);
+        $.ajax({
+            url: '/cart-decrement/'+rowId,
+            type: 'GET',
+            dataType: 'json',
+            success:function(data){
+                cart();
+                miniCart()
+            }
+        })
+        
+    }
+    // Decrement Cart Product Qty 
+
+
+     // Increment Cart Product Qty 
+    function cartIncrement(rowId) {
+        // alert(rowId);
+        $.ajax({
+            url: '/cart-increment/'+rowId,
+            type: 'GET',
+            dataType: 'json',
+            success:function(data){
+                cart();
+                miniCart()
+            }
+        })
+        
+    }
+    // Increment Cart Product Qty 
+</script>
+<!--  My Cart End -->
+
 </body>
 
 </html> 
