@@ -6,6 +6,7 @@ use  App\Http\Controllers\VendorController;
 use  App\Http\Controllers\AdminController;
 use  App\Http\Controllers\UserController;
 use  App\Http\Controllers\Backend\BrandController;
+use  App\Http\Controllers\Backend\CouponController;
 use  App\Http\Controllers\Backend\CategoryController;
 use  App\Http\Controllers\Backend\SubCategoryController;
 use  App\Http\Controllers\Backend\ProductController;
@@ -109,6 +110,17 @@ Route::controller(BrandController::class)->group(function(){
     Route::post('/update/brand','UpdateBrand')->name('update.brand');
     Route::get('/edit/brand/{id}','EditBrand')->name('edit.brand');
     Route::get('/delete/brand/{id}','DeleteBrand')->name('delete.brand');
+});
+
+
+// Coupon All Route
+Route::controller(CouponController::class)->group(function(){
+    Route::get('/all/coupon','AllCoupon')->name('all.coupon');
+    Route::get('/add/coupon','AddCoupon')->name('add.coupon');
+    Route::post('/store/coupon','StoreCoupon')->name('store.coupon');
+    Route::post('/update/coupon','UpdateCoupon')->name('update.coupon');
+    Route::get('/edit/coupon/{id}','EditCoupon')->name('edit.coupon');
+    Route::get('/delete/coupon/{id}','DeleteCoupon')->name('delete.coupon');
 });
 
 

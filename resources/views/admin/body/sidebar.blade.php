@@ -98,7 +98,7 @@
 				</li>
 
 
-				{{-- Banner --}}
+				<!-- {{-- Banner --}} -->
 				<li>
 					<a href="javascript:;" class="has-arrow">
 						<div class="parent-icon"><i class='bx bx-cart'></i>
@@ -114,6 +114,26 @@
 						</li>
 					</ul>
 				</li>
+				<!-- {{-- Banner --}} -->
+
+				<!-- {{-- Coupon --}} -->
+				<li>
+					<a href="javascript:;" class="has-arrow">
+						<div class="parent-icon"><i class='bx bx-cart'></i>
+						</div>
+						<div class="menu-title">Coupon System</div>
+					</a>
+					<ul>
+						<li>
+						 <a href="{{ route('all.coupon')}}"><i class="bx bx-right-arrow-alt"></i>All Coupon</a>
+						</li>
+						<li>
+						 <a href="{{ route('add.coupon')}}"><i class="bx bx-right-arrow-alt"></i>Add Coupon</a>
+						</li>
+					</ul>
+				</li>
+				<!-- {{-- Coupon --}} -->
+
 
 				<li class="menu-label">All Manage</li>
 
