@@ -13,6 +13,7 @@ use  App\Http\Controllers\Backend\ProductController;
 use  App\Http\Controllers\Backend\VendorProductController;
 use  App\Http\Controllers\Backend\SliderController;
 use  App\Http\Controllers\Backend\BannerController;
+use  App\Http\Controllers\Backend\ShippingAreaController;
 
 use  App\Http\Controllers\User\WishlistController;
 use  App\Http\Controllers\User\CompareController;
@@ -94,13 +95,17 @@ Route::controller(VendorProductController::class)->group(function(){
 
 
 });
+//Vendor Dashboard
 Route::get('/vendor/login',[VendorController::class, 'VendorLogin'])->name('vendor.login')->middleware(RedirectIfAuthenticated::class);
 Route::post('/vendor/register',[VendorController::class, 'VendorRegister'])->name('vendor.register');
 Route::get('/become/vendor',[VendorController::class, 'BecomeVendor'])->name('become.vendor');
 
-//Vendor Dashboard
+
+//Admin End Middleware Start
 
 Route::middleware(['auth','role:admin'])->group(function(){
+// ALL Admin Route Start
+
 
 // Brand All Route
 Route::controller(BrandController::class)->group(function(){
@@ -113,15 +118,6 @@ Route::controller(BrandController::class)->group(function(){
 });
 
 
-// Coupon All Route
-Route::controller(CouponController::class)->group(function(){
-    Route::get('/all/coupon','AllCoupon')->name('all.coupon');
-    Route::get('/add/coupon','AddCoupon')->name('add.coupon');
-    Route::post('/store/coupon','StoreCoupon')->name('store.coupon');
-    Route::post('/update/coupon','UpdateCoupon')->name('update.coupon');
-    Route::get('/edit/coupon/{id}','EditCoupon')->name('edit.coupon');
-    Route::get('/delete/coupon/{id}','DeleteCoupon')->name('delete.coupon');
-});
 
 
 // Category All Route
@@ -135,8 +131,6 @@ Route::controller(CategoryController::class)->group(function(){
 });
 
 
- 
-
 // SubCategory All Route
 Route::controller(SubCategoryController::class)->group(function(){
     Route::get('/all/subcategory','AllSubCategory')->name('all.subcategory');
@@ -147,8 +141,6 @@ Route::controller(SubCategoryController::class)->group(function(){
     Route::get('/delete/subcategory/{id}','DeleteSubCategory')->name('delete.subcategory');
     Route::get('/subcategory/ajax/{category_id}','GetSubCategory');
 });
-
-
 
 
 // Vendor Active and Inactive  All Route
@@ -183,7 +175,6 @@ Route::controller(ProductController::class)->group(function(){
 });
 
 
-
 //Slider Controller 
 Route::controller(SliderController::class)->group(function(){
     Route::get('/all/slider','AllSlider')->name('all.slider');
@@ -206,7 +197,43 @@ Route::controller(BannerController::class)->group(function(){
 });//Banner Controller End
 
 
-}); //Admin End Middleware
+// Coupon All Route
+Route::controller(CouponController::class)->group(function(){
+    Route::get('/all/coupon','AllCoupon')->name('all.coupon');
+    Route::get('/add/coupon','AddCoupon')->name('add.coupon');
+    Route::post('/store/coupon','StoreCoupon')->name('store.coupon');
+    Route::post('/update/coupon','UpdateCoupon')->name('update.coupon');
+    Route::get('/edit/coupon/{id}','EditCoupon')->name('edit.coupon');
+    Route::get('/delete/coupon/{id}','DeleteCoupon')->name('delete.coupon');
+});
+
+// Shiping Sate All Route
+Route::controller(ShippingAreaController::class)->group(function(){
+    Route::get('/all/state','AllDivision')->name('all.state');
+    Route::get('/add/state','AddDivision')->name('add.state');
+    Route::post('/store/state','StoreDivision')->name('store.state');
+    Route::post('/update/state','UpdateDivision')->name('update.state');
+    Route::get('/edit/state/{id}','EditDivision')->name('edit.state');
+    Route::get('/delete/state/{id}','DeleteDivision')->name('delete.state');
+});
+
+// Shiping Districts All Route
+Route::controller(ShippingAreaController::class)->group(function(){
+    Route::get('/all/district','AllDistrict')->name('all.district');
+    Route::get('/add/district','AddDistrict')->name('add.district');
+    Route::post('/store/district','StoreDistrict')->name('store.district');
+    Route::post('/update/district','UpdateDistrict')->name('update.district');
+    Route::get('/edit/district/{id}','EditDistrict')->name('edit.district');
+    Route::get('/delete/district/{id}','DeleteDistrict')->name('delete.district');
+});
+
+
+// ALL Admin Route End
+});
+ //Admin End Middleware End
+
+
+
 
 // Frontend Products Details All Route
 

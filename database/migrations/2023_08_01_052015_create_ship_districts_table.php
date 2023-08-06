@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ship_states', function (Blueprint $table) {
+        Schema::create('ship_districts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('division_id')->references('id')->on('ship_divisions')->onDelete('cascade');
-            $table->foreignId('districts_id')->references('id')->on('ship_districts')->onDelete('cascade');
-            $table->string('states_name');
+            $table->foreignId('state_id');
+            $table->string('districts_name');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ship_states');
+        Schema::dropIfExists('ship_districts');
     }
 };

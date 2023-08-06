@@ -132,6 +132,8 @@ class CartController extends Controller
         return view("frontend.mycart.view_mycart");
     } // End Method
 
+
+
     public function GetCartProduct()
     {
         $carts = Cart::content();

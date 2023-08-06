@@ -135,6 +135,25 @@
 				<!-- {{-- Coupon --}} -->
 
 
+			<!-- {{-- Shipping Area --}} -->
+				<li>
+					<a href="javascript:;" class="has-arrow">
+						<div class="parent-icon"><i class='bx bx-cart'></i>
+						</div>
+						<div class="menu-title">Shipping Area</div>
+					</a>
+					<ul>
+						<li>
+						 <a href="{{ route('all.state')}}"><i class="bx bx-right-arrow-alt"></i>All State</a>
+						</li>
+						<li>
+						 <a href="{{ route('all.district')}}"><i class="bx bx-right-arrow-alt"></i>All District</a>
+						</li>
+					</ul>
+				</li>
+			<!-- {{-- Shipping Area --}} -->
+
+
 				<li class="menu-label">All Manage</li>
 
 				<li>
