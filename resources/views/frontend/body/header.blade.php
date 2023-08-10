@@ -58,7 +58,7 @@
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="index.html"><img src="{{ asset('frontend/assets/imgs/theme/logo.svg') }}" alt="logo" /></a>
+                        <a href="{{ url('/')}}"><img src="{{ asset('frontend/assets/imgs/theme/logo.svg') }}" alt="logo" /></a>
                     </div>
     <div class="header-right">
         <div class="search-style-2">
@@ -110,7 +110,7 @@
                 </div>
                
                 <div class="header-action-icon-2">
-                    <a href="shop-wishlist.html">
+                    <a href="{{route('wishlist')}}">
                         <img class="svgInject" alt="Nest" src="{{ asset('frontend/assets/imgs/theme/icons/icon-heart.svg') }}" />
                         <span class="pro-count blue" id="wishlistQty">0</span>
                     </a>
@@ -121,7 +121,7 @@
 
 
                 <div class="header-action-icon-2">
-                    <a class="mini-cart-icon" href="shop-cart.html">
+                    <a class="mini-cart-icon" href="{{route('mycart')}}">
                         <img alt="Nest" src="{{ asset('frontend/assets/imgs/theme/icons/icon-cart.svg') }}" />
                         <span class="pro-count blue" id="cartQty">0</span>
                     </a>
@@ -145,8 +145,8 @@
                                 <h4>Total <span id="cartTotal"></span></h4>
                             </div>
                             <div class="shopping-cart-button">
-                                <a href="shop-cart.html" class="outline">View cart</a>
-                                <a href="shop-checkout.html">Checkout</a>
+                                <a href="{{ route('mycart')}}" class="outline">View cart</a>
+                                <a href="{{ route('checkout')}}">Checkout</a>
                             </div>
                                         </div>
                                     </div>

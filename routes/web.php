@@ -17,6 +17,7 @@ use  App\Http\Controllers\Backend\ShippingAreaController;
 
 use  App\Http\Controllers\User\WishlistController;
 use  App\Http\Controllers\User\CompareController;
+use  App\Http\Controllers\User\CheckoutController;
 
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\CartController;
@@ -29,11 +30,12 @@ Route::get('/',[IndexController::class ,'Index']);
 
 
 Route::middleware('auth')->group(function(){
+
     Route::get('/dashboard',[UserController::class ,'UserDashboard'])->name('dashboard');
     Route::post('/user/profile/store',[UserController::class, 'UserProfileStore'])->name('user.profile.store');
     Route::get('/user/logout',[UserController::class, 'UserLogout'])->name('user.logout');
     Route::post('/user/update/password',[UserController::class, 'UserUpdatePassword'])->name('user.update.password');
-});
+});// Gorup Milldeware End
 
 require __DIR__.'/auth.php';
 
@@ -42,9 +44,7 @@ require __DIR__.'/auth.php';
 //Admin Dashbord
 Route::middleware(['auth','role:admin'])->group(function(){
  Route::get('/admin/dashboard',[AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
-
   Route::get('/admin/logout',[AdminController::class, 'AdminDestroy'])->name('admin.logout');
-
   Route::get('/admin/profile',[AdminController::class, 'AdminProfile'])->name('admin.profile');
   Route::post('/admin/profile/store',[AdminController::class, 'AdminProfileStore'])->name('admin.profile.store');
   Route::get('/admin/change/password',[AdminController::class, 'AdminChangePassword'])->name('admin.change.password');
@@ -53,8 +53,7 @@ Route::middleware(['auth','role:admin'])->group(function(){
 
 });
 
- Route::get('/admin/login',[AdminController::class, 'AdminLogin'])->middleware(RedirectIfAuthenticated::class);
-
+ 
 
 
 //Vendor Dashboard
@@ -68,7 +67,9 @@ Route::middleware(['auth','role:vendor'])->group(function(){
  Route::get('/vendor/change/password',[VendorController::class, 'VendorChangePassword'])->name('vendor.change.password');
 Route::post('/vendor/update/password',[VendorController::class, 'VendorUpdatePassword'])->name('vendor.update.password');
 
-//Vendor Product Route
+
+
+// Vendor Add Product All Route 
 Route::controller(VendorProductController::class)->group(function(){
     Route::get('/vendor/all/product','VendorAllProduct')->name('vendor.all.product');
     Route::get('/vendor/add/product','VendorAddProduct')->name('vendor.add.product');
@@ -86,26 +87,25 @@ Route::controller(VendorProductController::class)->group(function(){
 
     Route::get('/vendor/delete/product/{id}','VendorDeleteProduct')->name('vendor.delete.product');
 
-    
+
 
 
      Route::get('/vendor/subcategory/ajax/{category_id}','vendorGetSubCategory');
-    
+
 });
 
 
-});
-//Vendor Dashboard
+});// end group middleware
+
+
+Route::get('/admin/login',[AdminController::class, 'AdminLogin'])->middleware(RedirectIfAuthenticated::class);
 Route::get('/vendor/login',[VendorController::class, 'VendorLogin'])->name('vendor.login')->middleware(RedirectIfAuthenticated::class);
 Route::post('/vendor/register',[VendorController::class, 'VendorRegister'])->name('vendor.register');
 Route::get('/become/vendor',[VendorController::class, 'BecomeVendor'])->name('become.vendor');
 
 
-//Admin End Middleware Start
 
 Route::middleware(['auth','role:admin'])->group(function(){
-// ALL Admin Route Start
-
 
 // Brand All Route
 Route::controller(BrandController::class)->group(function(){
@@ -171,11 +171,11 @@ Route::controller(ProductController::class)->group(function(){
 
     Route::get('/delete/product/{id}','DeleteProduct')->name('delete.product');
 
-    
+
 });
 
 
-//Slider Controller 
+//Slider Controller
 Route::controller(SliderController::class)->group(function(){
     Route::get('/all/slider','AllSlider')->name('all.slider');
     Route::get('/add/slider','AddSlider')->name('add.slider');
@@ -186,7 +186,7 @@ Route::controller(SliderController::class)->group(function(){
 });//Slider Controller End
 
 
-//Banner Controller 
+//Banner Controller
 Route::controller(BannerController::class)->group(function(){
     Route::get('/all/banner','AllBanner')->name('all.banner');
     Route::get('/add/banner','AddBanner')->name('add.banner');
@@ -228,9 +228,8 @@ Route::controller(ShippingAreaController::class)->group(function(){
 });
 
 
-// ALL Admin Route End
-});
- //Admin End Middleware End
+
+});//Admin End Middleware End
 
 
 
@@ -251,44 +250,17 @@ Route::get('/product/view/modal/{id}','ProductViewModel');
 
 
 
-
+// Cart Controller Start
 Route::controller(CartController::class)->group(function(){
 Route::post('/dcart/data/store/{id}',  'AddToDCart');
 Route::post('/cart/data/store/{id}',  'AddToCart');
 Route::get('/product/mini/cart',  'AddMiniCart');
 Route::get('/minicart/product/remove/{rowId}',  'RemoveMiniCart');
-   
-});//Cart Controller End
 
 
-// Compere Product
-Route::post('/add-to-compare/{compere_id}', [CompareController::class, 'AddToCompere']);
-
-//ADD TO Wish List 
-Route::post('/add-to-wishlist/{product_id}',[WishlistController::class,'addToWishList']);
+});
 
 
-//USER ALL ROUTE
-Route::middleware(['auth','role:user'])->group(function(){
-
-//Wishlist Controller 
-Route::controller(WishlistController::class)->group(function(){
-    Route::get('/wishlist','AllWishList')->name('wishlist');
-    Route::get('/get-wishlist-product/','GetWishlistProduct');
-    Route::get('/wishlist-remove/{id}','RemoveWishlist');
-   
-});//Wishlist Controller End
-
-//Wishlist Controller 
-Route::controller(CompareController::class)->group(function(){
-    Route::get('/compare','AllCompare')->name('compare');
-    Route::get('/get-compare-product/','GetCompareProduct');
-    Route::get('/compare-remove/{id}','RemoveCompere');
-   
-});//Compare Controller End
-
-
-// Cart Controller 
 Route::controller(CartController::class)->group(function(){
     Route::get('/mycart','MyCart')->name('mycart');
     Route::get('/get-cart-product','GetCartProduct');
@@ -296,7 +268,70 @@ Route::controller(CartController::class)->group(function(){
 
     Route::get('/cart-decrement/{rowId}','CartDecrement');
     Route::get('/cart-increment/{rowId}','CartIncrement');
-   
-});//Cart Controller End
+});
 
-}); // End Group Middleware
+
+// Compere Product
+Route::post('/add-to-compare/{compere_id}', [CompareController::class, 'AddToCompere']);
+
+//ADD TO Wish List
+Route::post('/add-to-wishlist/{product_id}',[WishlistController::class,'addToWishList']);
+
+
+
+//User  Middleware 
+Route::middleware(['auth','role:user'])->group(function(){
+
+//Wishlist Controller
+Route::controller(WishlistController::class)->group(function(){
+    Route::get('/wishlist','AllWishList')->name('wishlist');
+    Route::get('/get-wishlist-product/','GetWishlistProduct');
+    Route::get('/wishlist-remove/{id}','RemoveWishlist');
+
+});//Wishlist Controller End
+
+//Compare Controller
+Route::controller(CompareController::class)->group(function(){
+    Route::get('/compare','AllCompare')->name('compare');
+    Route::get('/get-compare-product/','GetCompareProduct');
+    Route::get('/compare-remove/{id}','RemoveCompere');
+
+});//Compare Controller End
+
+
+// All Coupon Route 
+Route::controller(CartController::class)->group(function(){
+
+
+    //Coupon Apply Option
+Route::post('/coupon-apply',  'ApplyCoupon');
+Route::get('/coupon-calculation',  'CouponCalculation');
+Route::get('/coupon-remove',  'CouponRemove');
+Route::get('/checkout',  'CheckoutCreate')->name('checkout');
+
+});
+//All Coupon Route End
+
+
+
+
+Route::controller(CheckoutController::class)->group(function(){
+    Route::get('/district/ajax/{id}','DistrictAjax');
+    Route::post('/checkout/store','CheckoutStore')->name('checked.store');
+});
+
+});//User Middleware End
+
+
+
+
+Route::controller(CartController::class)->group(function(){
+    Route::get('/mycart','MyCart')->name('mycart');
+    Route::get('/get-cart-product','GetCartProduct');
+    Route::get('/remove-cart/{rowId}','CartRemove');
+
+    Route::get('/cart-decrement/{rowId}','CartDecrement');
+    Route::get('/cart-increment/{rowId}','CartIncrement');
+    
+
+});//Cart Controller End
