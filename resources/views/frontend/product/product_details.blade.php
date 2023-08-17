@@ -117,6 +117,9 @@
                                         <div class="product-extra-link2">
 
                                             <input type="hidden" id="dproduct_id" value="{{$product->id}}">
+
+                                              <input type="hidden" id="dvendor_id" value="{{$product->vendor_id}}">
+                                              
                                             <button type="submit" onclick="addToCartDetails()" class="button button-add-to-cart"><i class="fi-rs-shopping-cart" ></i>Add to cart</button>
 
                                             

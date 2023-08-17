@@ -20,6 +20,10 @@ class CartController extends Controller
 
         $product = Product::findOrFail($id);
 
+        if(Session::has('coupon')){
+            Session::forget('coupon');
+        }
+
         if ($product->discount_price == NULL) {
 
             Cart::add([
@@ -33,6 +37,7 @@ class CartController extends Controller
                     'image' => $product->product_thambnail,
                     'color' => $request->color,
                     'size' => $request->size,
+                    'vendor' => $request->vendor,
                 ],
             ]);
 
@@ -51,6 +56,7 @@ class CartController extends Controller
                     'image' => $product->product_thambnail,
                     'color' => $request->color,
                     'size' => $request->size,
+                    'vendor' => $request->vendor,
                 ],
             ]);
 
@@ -102,6 +108,7 @@ class CartController extends Controller
                     'image' => $product->product_thambnail,
                     'color' => $request->color,
                     'size' => $request->size,
+                    'vendor' => $request->vendor,
                 ],
             ]);
 
@@ -120,6 +127,8 @@ class CartController extends Controller
                     'image' => $product->product_thambnail,
                     'color' => $request->color,
                     'size' => $request->size,
+                    'vendor' => $request->vendor,
+                    
                 ],
             ]);
 
@@ -159,6 +168,17 @@ class CartController extends Controller
     {
         Cart::remove($rowId);
 
+         if (Session::has('coupon')) {
+            $coupon_name = Session::get('coupon')['coupon_name'];
+            $coupon = Coupon::where('coupon_name',$coupon_name)->first();
+
+            Session::put('coupon',[
+            'coupon_name'=> $coupon->coupon_name,
+            'coupon_discount'=> $coupon->coupon_discount,
+            'discount_amout'=> round(Cart::total()*$coupon->coupon_discount/100),
+            'total_amount'=> round(Cart::total() - Cart::total() * $coupon->coupon_discount/100 )
+        ]);
+        }
         return response()->json(['success'=>'Cart Product Successfully Remove']);
 
     }// End Method

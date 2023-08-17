@@ -222,8 +222,9 @@ function couponRemove() {
             type: "GET",
             dataType: 'json',
             success:function(data){
-                couponCalculation();
                 $('#couponField').show();
+                couponCalculation();
+                
              
                
 
@@ -252,6 +253,7 @@ function couponRemove() {
             }
         })
     }
+    
 
 </script>
 @endsection

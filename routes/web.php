@@ -18,6 +18,7 @@ use  App\Http\Controllers\Backend\ShippingAreaController;
 use  App\Http\Controllers\User\WishlistController;
 use  App\Http\Controllers\User\CompareController;
 use  App\Http\Controllers\User\CheckoutController;
+use  App\Http\Controllers\User\StripeController;
 
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\CartController;
@@ -314,10 +315,17 @@ Route::get('/checkout',  'CheckoutCreate')->name('checkout');
 
 
 
-
+// Checkout All Route
 Route::controller(CheckoutController::class)->group(function(){
     Route::get('/district/ajax/{id}','DistrictAjax');
     Route::post('/checkout/store','CheckoutStore')->name('checked.store');
+});
+
+//Stripe All Route
+Route::controller(StripeController::class)->group(function(){
+    Route::post('/stripe/order','StripeOrder')->name('stripe.order');
+    Route::post('/cash/order','CashOrder')->name('cash.order');
+    
 });
 
 });//User Middleware End
